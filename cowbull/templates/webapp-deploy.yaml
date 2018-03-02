@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webapp-{{ template "cowbull.fullname" . }}-pod
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: webapp-{{ template "cowbull.fullname" . }}
+        run: webapp
+        tier: webappFrontend
+    spec:
+      containers:
+      - name: webapp
+        image: dsanderscan/cowbull_webapp
+        resources:
+          requests:
+            cpu: {{ .Values.frontend.cpu }}
+            memory: {{ .Values.frontend.memory }}
+        env:
+        - name: LOGGING_LEVEL
+          value: "10"
+        - name: COWBULL_SERVER
+          value: "cowbull-{{ template "cowbull.fullname" . }}-svc"
+#          value: "cowbull-svc"
+        - name: COWBULL_PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080

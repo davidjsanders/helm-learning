@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cowbull.fullname" . }}
+  labels:
+    app: {{ template "cowbull.name" . }}
+    chart: {{ template "cowbull.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "cowbull.name" . }}
+    release: {{ .Release.Name }}
