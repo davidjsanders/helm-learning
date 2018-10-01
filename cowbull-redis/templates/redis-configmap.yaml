@@ -42,7 +42,9 @@ data:
         echo 'Waiting for server redis-{{ template "cowbull.fullname" . }}-0.redis-{{ template "cowbull.fullname" . }}-svc.default.svc.cluster.local'
         sleep 1
     done
-    redis-sentinel /redis-config/sentinel.conf
+    cp /redis-config/sentinel.conf ~/
+    # redis-sentinel /redis-config/sentinel.conf
+    redis-sentinel ~/sentinel.conf
   slave.conf: |
     bind 0.0.0.0
     port 6379

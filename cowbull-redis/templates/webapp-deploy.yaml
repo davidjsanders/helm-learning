@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: dsanderscan/cowbull_webapp
+        image: {{ .Values.frontend.image }}{{ .Values.frontend.image-tag }}
         resources:
           requests:
             cpu: {{ .Values.frontend.cpu }}
@@ -23,8 +23,11 @@ spec:
           value: "10"
         - name: COWBULL_SERVER
           value: "cowbull-{{ template "cowbull.fullname" . }}-svc"
-#          value: "cowbull-svc"
         - name: COWBULL_PORT
           value: "8080"
+        - name: COWBULL_ENVIRONMENT
+          value: "DEV"
+        - name: NAVBAR_COLOUR
+          value: "bg-secondary"
         ports:
         - containerPort: 8080
